@@ -42,7 +42,7 @@ const taskSlice = createSlice({
     addTask: (state, action) => {
       if (!state.tasks) state.tasks = [];
       state.tasks.push({
-        id: state.length + 1,
+        id: state.tasks.length + 1,
         task: action.payload.task,
         completed: false,
       });

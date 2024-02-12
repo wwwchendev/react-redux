@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import { loadTasks } from '@/store/tasks'
+import { loadTasks, deleteTask } from '@/store/tasks'
 import { useDispatch, useSelector } from 'react-redux'
 
 const Task = () => {
   const dispatch = useDispatch();
   const { tasks, loading } = useSelector(state => state.tasks);
   // console.log(useSelector(state => state.tasks));
+
   useEffect(() => {
     dispatch(loadTasks())
   }, [])
+
+  const removeTask = (task) => {
+    dispatch(deleteTask({ id: task.id }))
+  }
 
   return (
     <div>
       {loading && <p>載入中...</p>}
       {tasks.map((task, idx) => {
-        return <p key={task.id}>{task.task}</p>
+        return <div key={task.id} style={{ display: 'flex' }}>
+          <p >{task.task}</p>
+          <button onClick={() => { removeTask(task) }}>X</button>
+        </div>
       })}
     </div>
   )

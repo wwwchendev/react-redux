@@ -13,7 +13,6 @@ const Task = () => {
   return (
     <div>
       {loading && <p>載入中...</p>}
-      <h1>Task</h1>
       {tasks.map((task, idx) => {
         return <p key={task.id}>{task.task}</p>
       })}

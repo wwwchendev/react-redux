@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { loadTasks, deleteTask } from '@/store/tasks'
+import { loadTasks, deleteTask, updateCompleted } from '@/store/tasks'
 import { useDispatch, useSelector } from 'react-redux'
 
 const Task = () => {
@@ -14,17 +14,28 @@ const Task = () => {
   const removeTask = (task) => {
     dispatch(deleteTask({ id: task.id }))
   }
+  const toggleCompleted = (task) => {
+    dispatch(updateCompleted({
+      id: task.id,
+      completed: !task.completed
+    }))
+  }
 
   return (
     <div>
       {loading && <p>載入中...</p>}
       {tasks.map((task, idx) => {
         return <div key={task.id} style={{ display: 'flex' }}>
-          <p >{task.task}</p>
+          <p
+            onClick={() => { toggleCompleted(task) }}
+            style={{ textDecoration: `${task.completed ? 'line-through' : ''}` }}
+          >
+            {task.task}
+          </p>
           <button onClick={() => { removeTask(task) }}>X</button>
         </div>
       })}
-    </div>
+    </div >
   )
 }
 

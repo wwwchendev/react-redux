@@ -1,11 +1,32 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { loadTasks } from '@/store/tasks'
 import StoreContext from '../contexts/storeContext'
 
 const Task = () => {
   const store = useContext(StoreContext);
-  console.log(store.getState());
+  const [tasks, setTasks] = useState([]);
+  useEffect(() => {
+    store.dispatch(loadTasks())
+    const unsubscribe = store.subscribe(() => {
+      const storeTasks = store.getState().tasks.tasks;
+      if (storeTasks !== tasks) {
+        setTasks(storeTasks)
+      }
+    })
+    return () => { unsubscribe() }
+  }, [])
+
+
+
+  // console.log(tasks);
+
   return (
-    <div>Task</div>
+    <div>
+      <h1>Task</h1>
+      {tasks.map((task, idx) => {
+        return <p key={task.id}>{task.task}</p>
+      })}
+    </div>
   )
 }
 

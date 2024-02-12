@@ -34,7 +34,8 @@ const taskSlice = createSlice({
       state.loading = false;
     },
     getTasks: (state, action) => {
-      state.tasks = action.payload.tasks;
+      state.tasks = action.payload;
+      console.log(state.tasks);
       state.loading = false;
     },
     // action: function

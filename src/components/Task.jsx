@@ -1,27 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { loadTasks } from '@/store/tasks'
-import StoreContext from '../contexts/storeContext'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Task = () => {
-  const store = useContext(StoreContext);
-  const [tasks, setTasks] = useState([]);
+  const dispatch = useDispatch();
+  const { tasks, loading } = useSelector(state => state.tasks);
+  // console.log(useSelector(state => state.tasks));
   useEffect(() => {
-    store.dispatch(loadTasks())
-    const unsubscribe = store.subscribe(() => {
-      const storeTasks = store.getState().tasks.tasks;
-      if (storeTasks !== tasks) {
-        setTasks(storeTasks)
-      }
-    })
-    return () => { unsubscribe() }
+    dispatch(loadTasks())
   }, [])
-
-
-
-  // console.log(tasks);
 
   return (
     <div>
+      {loading && <p>載入中...</p>}
       <h1>Task</h1>
       {tasks.map((task, idx) => {
         return <p key={task.id}>{task.task}</p>
